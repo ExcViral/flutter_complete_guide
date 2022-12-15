@@ -1,118 +1,71 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import './quiz.dart';
+import './result.dart';
 
-class MyApp extends StatefulWidget {
+void main() => runApp(App());
+
+class App extends StatefulWidget {
+  // const App({Key key}) : super(key: key);
+
   @override
-  State<StatefulWidget> createState() {
-    return MyAppState();
-  }
+  State<App> createState() => _AppState();
 }
 
-class MyAppState extends State<MyApp> {
-  var questionIndex = 0;
-  var questions = [
-    'What\'s your favourite color?',
-    'What\'s your favourite animal?'
+class _AppState extends State<App> {
+  var _questionIndex = 0;
+  // var _buttonIndex = 0;
+  var _questionBank = [
+    // {
+    //   'qBody': 'Welcome to the Quizz App!!',
+    //   'buttonTextList': ['Start Quiz'],
+    //   'userAnswer': null
+    // },
+    {
+      'qBody': 'What is your favourite color?',
+      'buttonTextList': ['Red', 'Blue', 'Green', 'Yellow'],
+      'userAnswer': null
+    },
+    {
+      'qBody': 'What is your favourite animal?',
+      'buttonTextList': ['Cheetah', 'Cat', 'Dog', 'Lion'],
+      'userAnswer': null
+    },
+    {
+      'qBody': 'What is your favourite board game?',
+      'buttonTextList': ['Carrom', 'Chess', 'Snake and Ladder'],
+      'userAnswer': null
+    },
+    // {
+    //   'qBody':
+    //       'You have successfully completed the quiz. Click on the button below to view your score.',
+    //   'buttonTextList': ['View Score'],
+    //   'userAnswer': null
+    // },
   ];
-
-  void answerQuestion() {
+  void _answerQuestionHandler(int index) {
+    // if (_questionIndex < _questionBank.length - 1) {
     setState(() {
-      questionIndex = questionIndex + 1;
+      _questionBank[_questionIndex]['userAnswer'] =
+          (_questionBank[_questionIndex]['buttonTextList'] as List)[index];
+      print(_questionBank[_questionIndex]['userAnswer']);
+      _questionIndex = _questionIndex + 1;
     });
-    print(questionIndex);
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('My First App'),
-        ),
-        body: Column(
-          children: <Widget>[
-            Text(questions[questionIndex]),
-            ElevatedButton(onPressed: answerQuestion, child: Text('Answer 1')),
-            ElevatedButton(
-                onPressed: () => print('Answer 2 Chosen'),
-                child: Text('Answer 2')),
-            ElevatedButton(
-                onPressed: () {
-                  print('Answer 3 Chosen');
-                  print('It is a lovely day!');
-                },
-                child: Text('Answer 3')),
-          ],
-        ),
+        appBar: AppBar(title: Text('Quizz App')),
+        body: _questionIndex < _questionBank.length
+            ? Quiz(
+                questionBody: _questionBank[_questionIndex]['qBody'],
+                buttonTextList: _questionBank[_questionIndex]['buttonTextList'],
+                answerQuestionHandler: _answerQuestionHandler)
+            : Result(),
       ),
     );
   }
 }
-
-
-// Simple Stateful Widget Making Test
-// void main() => runApp(NewApp());
-
-// class NewApp extends StatefulWidget {
-//   @override
-//   State<NewApp> createState() => _NewAppState();
-// }
-
-// class _NewAppState extends State<NewApp> {
-//   List textBank = ['First', 'Second', 'Third', 'Fourth', 'Fifth'];
-//   var index = 0;
-//   void nextClickHandler() {
-//     setState(() {
-//       if (index < textBank.length - 1) {
-//         index = index + 1;
-//       } else {
-//         index = 0;
-//       }
-//     });
-//   }
-
-//   void previousClickHandler() {
-//     setState(() {
-//       if (index == 0) {
-//         index = textBank.length - 1;
-//       } else {
-//         index = index - 1;
-//       }
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         appBar: AppBar(title: Text('Stateful App Test')),
-//         body: Column(
-//           children: [
-//             Text(textBank[index]),
-//             Row(
-//               children: [
-//                 ElevatedButton(
-//                   onPressed: previousClickHandler,
-//                   child: Text('<< Previous'),
-//                 ),
-//                 ElevatedButton(
-//                     onPressed: nextClickHandler, child: Text('Next >>'))
-//               ],
-//             ),
-//             ElevatedButton(
-//                 onPressed: () {
-//                   setState(() {
-//                     var dummyText = 'dummy' + textBank.length.toString();
-//                     textBank.add(dummyText);
-//                   });
-//                 },
-//                 child: Text('Add New'))
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
